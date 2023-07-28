@@ -29,7 +29,7 @@ function changePreference(value) {
 <style>
 .checkbox-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .checkbox-label {
     align-self: flex-start;
@@ -57,7 +57,8 @@ input[type='checkbox'] {
     height: 15px;
     width: 15px;
     border: 1px solid #555;
-    color: black
+    color: black;
+    border-radius: 3px;
 }
 .checkmark:after {
     content: "";

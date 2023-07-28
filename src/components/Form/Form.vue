@@ -231,7 +231,11 @@ function submitForm() {
 }
 
 .submit-button {
-    margin-top: 45px;
+    margin-top: 30px;
     background-color: #88C562;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: white;
 }
 </style>

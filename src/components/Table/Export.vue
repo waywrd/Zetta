@@ -13,23 +13,27 @@ function closeDialog() {
 
 </script>
 <template>
-    <button @click='openDialog()'>Export</button>
+    <button class='export-button' @click='openDialog()'>Export</button>
     <dialog id='modal'>
-        <div class='modal-content'>
+        <div>
             <span @click='closeDialog()' class='modal-close'>X</span>
-
-            <pre>{{ JSON.stringify(tableData, null, 4) }}</pre>
+            <pre>{{ JSON.stringify(tableData, null, 2) }}</pre>
         </div>
     </dialog>
 </template>
 <style scoped>
-#data-dialog {
-    position: relative
-}
 .modal-close {
     position: absolute;
     top: 10px;
     right: 15px;
     cursor: pointer;
+}
+.export-button {
+    background-color: #0E6DAA;
+    color: white;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 </style>
