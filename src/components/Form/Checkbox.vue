@@ -1,13 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-const error = defineProps({ checkboxError: {} })
-const emit = defineEmits(['addPreference'])
+const error = defineProps({ checkboxError: {}, resetCheckboxes: false })
+const emit = defineEmits(['changePreference'])
 
 
 const contactOptions = ref(['Email', 'Phone', 'Call', 'SMS'])
 
 function changePreference(value) {
-    console.log(value)
     emit('changePreference', value)
 
 }
@@ -19,8 +18,9 @@ function changePreference(value) {
     <label class='checkbox-label'>Contact Preferences</label>
     <div class='checkbox-container'>
         <label class='contact-label' v-for="( option, index ) in  contactOptions " :key="index">
-            <input @change='changePreference(option)' type="checkbox" :value="option" />
-            <span class='checkmark'></span>
+            <input @change='changePreference(option)' type="checkbox" :value="option"
+                :checked="resetCheckboxes ? false : null" />
+            <span class="checkmark"></span>
             {{ option }}
         </label>
     </div>
@@ -64,6 +64,16 @@ input[type='checkbox'] {
     content: "";
     position: absolute;
     display: none;
+}
+.checkmark--empty {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    height: 15px;
+    width: 15px;
+    border: 1px solid #555;
+    color: black;
+    border-radius: 3px;
 }
 .contact-label input:checked~.checkmark:after {
     display: block;

@@ -4,12 +4,20 @@ import Checkbox from './Checkbox.vue'
 
 const emit = defineEmits(['updateTableValue'])
 
+const form = ref({
+    name: '',
+    surname: '',
+    email: '',
+    age: '',
+    color: '',
+    contactPreference: [],
+});
+
 const errors = ref({
     emailError: {
         state: false,
         text: 'Please enter a valid email address'
     },
-
     ageError: {
         state: false,
         text: 'Please select  age under 120'
@@ -21,22 +29,13 @@ const errors = ref({
 
 })
 
-const form = ref({
-    name: '',
-    surname: '',
-    email: '',
-    age: '',
-    color: '',
-    contactPreference: [],
-});
+const resetCheckboxes = ref(false)
 
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValid = emailRegex.test(email);
     return isValid;
 }
-
-
 
 function isAgeValid(age) {
     if (age > 120) {
@@ -53,16 +52,18 @@ function isValidContactPreference(preferences) {
     return false
 }
 
-function changePreference(payload) {
-    console.log(payload)
+function changePreferenceData(payload) {
     if (form.value.contactPreference.includes(payload)) {
         form.value.contactPreference = form.value.contactPreference.filter(p => p !== payload)
+
     }
     else {
         form.value.contactPreference.push(payload)
-
+        resetCheckboxes.value = false
     }
 }
+
+
 
 function submitForm() {
     let isFormValid = true
@@ -82,9 +83,21 @@ function submitForm() {
     }
     if (isFormValid) {
         let formDataDeepCopy = JSON.parse(JSON.stringify(form.value))
+        resetForm()
         emit('updateTableValue', formDataDeepCopy)
     }
 
+}
+function resetForm() {
+    resetCheckboxes.value = true;
+    form.value = {
+        name: '',
+        surname: '',
+        email: '',
+        age: '',
+        color: '',
+        contactPreference: [],
+    }
 }
 </script>
 
@@ -125,7 +138,8 @@ function submitForm() {
                 </select>
             </div>
             <div class='fourth-row'>
-                <Checkbox @changePreference='changePreference' :checkboxError='errors.checkboxError' />
+                <Checkbox @changePreference='changePreferenceData' :checkboxError='errors.checkboxError'
+                    :resetCheckboxes='resetCheckboxes' />
             </div>
 
             <button class='submit-button' @click.prevent='submitForm'>Submit</button>

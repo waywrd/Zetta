@@ -13,13 +13,16 @@ function closeDialog() {
 
 </script>
 <template>
-    <button class='export-button' @click='openDialog()'>Export</button>
-    <dialog id='modal'>
-        <div>
-            <span @click='closeDialog()' class='modal-close'>X</span>
-            <pre>{{ JSON.stringify(tableData, null, 2) }}</pre>
-        </div>
-    </dialog>
+    <div>
+        <button class='export-button' @click='openDialog()'>Export</button>
+        <dialog id='modal'>
+            <div>
+                <span @click='closeDialog()' class='modal-close'>X</span>
+                <pre>{{ JSON.stringify(tableData, null, 2) }}</pre>
+            </div>
+        </dialog>
+
+    </div>
 </template>
 <style scoped>
 .modal-close {
