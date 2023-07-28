@@ -1,12 +1,18 @@
 
 <script setup>
-import ExportButton from './ExportButton.vue';
+
+import Export from './Export.vue';
 const props = defineProps({ tableData: [] })
+const emit = defineEmits(['deleteRow'])
+
+function deleteRow(index) {
+    emit('deleteRow', index)
+}
 
 </script>
 <template>
     <div class='table-container'>
-        <table>
+        <table v-if='tableData.length'>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -18,7 +24,7 @@ const props = defineProps({ tableData: [] })
                 </tr>
             </thead>
             <tbody>
-                <tr v-for='data in tableData'>
+                <tr v-for='data, index in tableData' :key='index'>
                     <td>{{ data.name }}</td>
                     <td>{{ data.surname }}</td>
                     <td>{{ data.email }}</td>
@@ -26,13 +32,15 @@ const props = defineProps({ tableData: [] })
                     <td>{{ data.color }}</td>
                     <td>{{ data.contactPreference.join(' ,') }}</td>
                     <td class='__delete-button'>
-                        <button class='delete-button'>Delete</button>
+                        <button @click='deleteRow(index)' class='delete-button'>Delete</button>
                     </td>
 
                 </tr>
             </tbody>
         </table>
-        <ExportButton :tableData="tableData" class='export-button' />
+        <div class='empty-table' v-else>No data</div>
+        <Export v-if="tableData.length" :tableData="tableData" :style="{ ' margin-top': '20px' }" />
+
     </div>
 </template>
 <style scoped lang='scss'>
@@ -65,6 +73,7 @@ td {
 
     &.__delete-button {
         border: none;
+        background-color: white;
     }
 }
 
@@ -82,6 +91,21 @@ th {
 }
 
 .export-button {
-    margin-top: 40px;
+    color: red;
+    margin-top: 100px;
+}
+
+.empty-table {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 200px;
+    flex-grow: 1;
+    background-color: whitesmoke;
+    font-size: 22px;
+    width: 400px;
+    font-weight: bold;
+    margin-top: 28px;
+    border-radius: 12px;
 }
 </style>

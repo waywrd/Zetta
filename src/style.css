@@ -38,7 +38,7 @@ button {
 
 #app {
 	position: absolute;
-	top: 250px;
+	top: 150px;
 	display: flex;
 	place-items: center;
 	padding: 1em;

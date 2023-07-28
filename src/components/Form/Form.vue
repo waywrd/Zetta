@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import Checkbox from './Checkbox.vue'
 
 const emit = defineEmits(['updateTableValue'])
 
@@ -8,30 +9,40 @@ const errors = ref({
         state: false,
         text: 'Please enter a valid email address'
     },
+
+    ageError: {
+        state: false,
+        text: 'Please select  age under 120'
+    },
     checkboxError: {
         state: false,
         text: 'Add at least one contact preference'
-    },
-    ageError: {
-        state: false,
-        text: 'Please select an age under 120 years'
     }
+
 })
 
 const form = ref({
     name: '',
     surname: '',
     email: '',
-    age: 22,
+    age: '',
     color: '',
-    contactPreference: ['Call'],
+    contactPreference: [],
 });
-const contactOptions = ['Email', 'Phone', 'Call', 'SMS'];
 
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValid = emailRegex.test(email);
     return isValid;
+}
+
+
+
+function isAgeValid(age) {
+    if (age > 120) {
+        return false
+    }
+    return true
 }
 
 function isValidContactPreference(preferences) {
@@ -42,11 +53,15 @@ function isValidContactPreference(preferences) {
     return false
 }
 
-function isAgeValid(age) {
-    if (age > 120) {
-        return false
+function changePreference(payload) {
+    console.log(payload)
+    if (form.value.contactPreference.includes(payload)) {
+        form.value.contactPreference = form.value.contactPreference.filter(p => p !== payload)
     }
-    return true
+    else {
+        form.value.contactPreference.push(payload)
+
+    }
 }
 
 function submitForm() {
@@ -76,35 +91,43 @@ function submitForm() {
 <template>
     <form>
         <div class='form-row'>
-            <div class='names-row'>
-                <input placeholder='Name' v-model='form.name' id='name' type="text">
-                <input placeholder='Surname' v-model='form.surname' class='names-row__surname' type="text">
+            <div class='first-row'>
+                <input class='form-input' placeholder='Name' v-model='form.name' id='name' type="text">
+                <input class='form-input' placeholder='Surname' v-model='form.surname' type="text">
             </div>
-            <div class='names-row'>
-                <input placeholder='Email address' v-model='form.email' id='email' type="text">
-                <div class='error-message' v-if='errors.emailError.state'>{{ errors.emailError.text }}</div>
-                <label>Age</label>
-                <input v-model="form.age" id='age' type="number">
-                <div class='error-message' v-if='errors.emailError.state'>{{ errors.ageError.text }}</div>
-            </div>
-            <label for="favoriteColor">Favorite Color</label>
-            <select id='favoriteColor' v-model="form.color">
-                <option disabled value="">Select a color</option>
-                <option>Red</option>
-                <option>Green</option>
-                <option>Blue</option>
-                <option>White</option>
-                <option>Black</option>
-            </select>
-            <div> Contact Preferences</div>
-            <div class='chechbox-container'>
-                <label v-for="( option, index ) in  contactOptions " :key="index">
-                    <input @change='isValidContactPreference(form.contactPreference)' type="checkbox" :value="option"
-                        v-model="form.contactPreference" /> {{ option }}
-                </label>
-                <div class='error-message' v-if='errors.checkboxError.state'>{{ errors.checkboxError.text }}</div>
+            <div class='second-row'>
+                <div class='email-field'>
+                    <input class='form-input email-input' placeholder='Email address' v-model='form.email' type="text">
+                    <div class='error-message' v-if='errors.emailError.state'>{{ errors.emailError.text }}</div>
+
+                </div>
+                <div class='age-container'>
+                    <label class='label' for='age'>Age</label>
+                    <select class='select' v-model="form.age">
+                        <option value="" selected disabled>Select Age</option>
+                        <option v-for='age in Array.from({ length: 108 }, (_, index) => 14 + index)'>{{ age }}</option>
+                    </select>
+                    <div class='error-message' v-if='errors.ageError.state'>{{ errors.ageError.text }}</div>
+
+                </div>
+
 
             </div>
+            <div class='third-row'>
+                <label class='label favorite-color-label' for="favoriteColor">Favorite Color</label>
+                <select class='select favorite-color-select' id='favoriteColor' v-model="form.color">
+                    <option disabled value="">Select a color</option>
+                    <option>Red</option>
+                    <option>Green</option>
+                    <option>Blue</option>
+                    <option>White</option>
+                    <option>Black</option>
+                </select>
+            </div>
+            <div class='fourth-row'>
+                <Checkbox @changePreference='changePreference' :checkboxError='errors.checkboxError' />
+            </div>
+
             <button class='submit-button' @click.prevent='submitForm'>Submit</button>
         </div>
     </form>
@@ -117,31 +140,59 @@ function submitForm() {
     justify-content: space-around;
 }
 
-.names-row {
+.first-row {
     display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
 
     &__surname {
         margin-left: 20px;
     }
 }
 
-input {
+.second-row {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 5px;
+}
+
+.third-row {
+    display: flex;
+    flex-direction: column;
+    padding-top: 15px;
+    width: 100%;
+}
+
+.fourth-row {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.form-input {
     font-size: 16px;
+    height: 22px;
     padding: 10px 8px 7px 8px;
     border: 1px solid lightgray;
     border-radius: 5px;
     background-color: whitesmoke;
 }
 
-input[type='number'] {
-    max-width: 100px;
+.age-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 32px;
+    padding-top: 8px;
+    width: 130px;
 }
 
-select {
-    padding: 12px 7px 7px 3px;
-    background-color: whitesmoke;
-    border: 1px solid lightgray;
-    border-radius: 5px;
+.email-field {
+    padding-top: 28px;
+    flex-grow: 1;
+}
+
+.email-input {
+    width: 92%;
 }
 
 .chechbox-container {
@@ -156,11 +207,27 @@ select {
     padding-top: 1px;
 }
 
-label {
-    font-weight: bold;
+.favorite-color-select {
+    width: 100%
+}
+
+.favorite-color-label {
     align-self: flex-start;
-    padding-top: 10px;
-    display: block;
+}
+
+.select {
+    padding: 11px 7px 10px 3px;
+    background-color: whitesmoke;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    font-size: 16px;
+    appearance: none;
+}
+
+.label {
+    align-self: flex-start;
+    font-size: 13px;
+    padding-bottom: 1px;
 }
 
 .submit-button {
