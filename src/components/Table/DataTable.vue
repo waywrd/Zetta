@@ -1,17 +1,48 @@
 
 <script setup>
-
+import { ref } from 'vue';
 import Export from './Export.vue';
 const props = defineProps({ tableData: [] })
 const emit = defineEmits(['deleteRow'])
 
-function deleteRow(index) {
-    emit('deleteRow', index)
+const deleteIndex = ref()
+
+function openDeleteModal(index) {
+    let dialog = document.getElementById('delete-modal')
+    deleteIndex.value = index;
+    dialog.showModal()
+
 }
+
+function deleteRow(index) {
+    let dialog = document.getElementById('delete-modal')
+    dialog.close()
+    emit('deleteRow', index)
+
+
+}
+
+function closeDeleteModal() {
+    let dialog = document.getElementById('delete-modal')
+    dialog.close()
+}
+
 
 </script>
 <template>
     <div class='table-container'>
+        <dialog id='delete-modal'>
+            <div>
+                <span @click='closeDeleteModal()' class='delete-modal-close'>X</span>
+                <div class='delete-confirmation-container'>
+                    <h3>Are you sure you want to delete current row?</h3>
+                    <div class='delete-confirmation-container__buttons'>
+                        <button class='delete-button' @click='deleteRow'>Delete</button>
+                        <button @click='closeDeleteModal'>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </dialog>
         <table class='table' v-if='tableData.length'>
             <thead>
                 <tr class='table-row'>
@@ -32,7 +63,7 @@ function deleteRow(index) {
                     <td class='table-data'>{{ data.color }}</td>
                     <td class='table-data'>{{ data.contactPreference.join(' ,') }}</td>
                     <td class='table-data__delete-button'>
-                        <button @click='deleteRow(index)' class='delete-button'>Delete</button>
+                        <button @click='openDeleteModal(index)' class='delete-button'>Delete</button>
                     </td>
 
                 </tr>
@@ -81,6 +112,22 @@ td>.table-data__delete-button {
     font-weight: bold;
     padding: 7px 22px 7px 22px;
     margin-left: 15px;
+}
+.delete-confirmation-container {
+    display: flex;
+    flex-direction: column;
+}
+.delete-confirmation-container__buttons {
+    display: flex;
+    justify-content: space-around;
+}
+.delete-modal {
+    width: 100px;
+}
+.delete-modal-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 .empty-table {
     display: flex;
