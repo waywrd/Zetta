@@ -13,6 +13,8 @@ const form = ref({
     contactPreference: [],
 });
 
+const resetCheckboxes = ref(false)
+
 const errors = ref({
     emailError: {
         state: false,
@@ -29,7 +31,7 @@ const errors = ref({
 
 })
 
-const resetCheckboxes = ref(false)
+
 
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -55,11 +57,9 @@ function isValidContactPreference(preferences) {
 function changePreferenceData(payload) {
     if (form.value.contactPreference.includes(payload)) {
         form.value.contactPreference = form.value.contactPreference.filter(p => p !== payload)
-
     }
     else {
         form.value.contactPreference.push(payload)
-        resetCheckboxes.value = false
     }
 }
 
@@ -141,7 +141,6 @@ function resetForm() {
                 <Checkbox @changePreference='changePreferenceData' :checkboxError='errors.checkboxError'
                     :resetCheckboxes='resetCheckboxes' />
             </div>
-
             <button class='submit-button' @click.prevent='submitForm'>Submit</button>
         </div>
     </form>
@@ -162,10 +161,6 @@ function resetForm() {
     display: flex;
     justify-content: space-between;
     padding-top: 10px;
-
-    &__surname {
-        margin-left: 20px;
-    }
 }
 
 .second-row {
@@ -255,5 +250,9 @@ function resetForm() {
     letter-spacing: 1px;
     font-weight: bold;
     color: white;
+}
+
+.submit-button:hover {
+    background-color: hsl(97, 68%, 43%);
 }
 </style>
