@@ -39,4 +39,8 @@ function closeDialog() {
     text-transform: uppercase;
     font-weight: bold;
 }
+.export-button:hover {
+    background-color: #065282;
+    ;
+}
 </style>

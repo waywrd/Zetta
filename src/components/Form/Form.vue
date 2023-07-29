@@ -129,7 +129,7 @@ function resetForm() {
             <div class='third-row'>
                 <label class='label favorite-color-label' for="favoriteColor">Favorite Color</label>
                 <select class='select favorite-color-select' id='favoriteColor' v-model="form.color">
-                    <option disabled value="">Select a color</option>
+                    <option disabled value="">Select color</option>
                     <option>Red</option>
                     <option>Green</option>
                     <option>Blue</option>
