@@ -152,6 +152,10 @@ function resetForm() {
     flex-direction: column;
     width: 400px;
     justify-content: space-around;
+
+    @media screen and (max-width: '400px') {
+        width: 300px;
+    }
 }
 
 .first-row {
