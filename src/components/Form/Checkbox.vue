@@ -65,16 +65,6 @@ input[type='checkbox'] {
     position: absolute;
     display: none;
 }
-.checkmark--empty {
-    position: absolute;
-    top: 3px;
-    left: 4px;
-    height: 15px;
-    width: 15px;
-    border: 1px solid #555;
-    color: black;
-    border-radius: 3px;
-}
 .contact-label input:checked~.checkmark:after {
     display: block;
 }
