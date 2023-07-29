@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import DataTable from './components/Table/DataTable.vue'
 import Form from './components/Form/Form.vue'
+import Header from './components/Header.vue'
 
 const tableData = ref([])
 
@@ -17,8 +18,7 @@ function deleteRow(payload) {
 <template>
   <div class='app-container'>
     <div class='container'>
-      <img src="./assets/zetta.png" alt="">
-      <h1>Contact Form</h1>
+      <Header />
       <Form @updateTableValue="addTableRow" />
       <DataTable @deleteRow='deleteRow' :tableData="tableData" />
 
@@ -31,7 +31,6 @@ function deleteRow(payload) {
 <style scoped >
 .app-container {
   display: flex;
-  justify-content: spa;
 }
 .first-block {
   width: 300px;
